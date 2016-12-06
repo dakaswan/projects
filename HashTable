@@ -1,0 +1,90 @@
+//Dakota Swanson
+//Hash table program: this program takes 100,000 ints from cin(using Linix/IO)
+//and makes a hash table and read and search function
+
+#include <iostream>
+#include <ctime>
+#include <vector>
+#include <list>
+
+using namespace std;
+
+bool searchNumber(vector< list<int> >&, int);
+
+int main()
+{
+    int index = 0;
+    //hash table container: vector
+    //hash table size: 100003
+    //hash table size is a prime number for better hashing
+    //collision handle: STL list
+    
+    vector < list<int> > hashTable(100003);
+    
+    //read 100000 numbers to hash table
+    int number = 0;
+    for(int i = 0; i < 100000; i++)
+    {
+            cin >> number;
+            //each loop of the for loop takes in a different number from the file.data and is saved to number
+            
+            index = number % 100003;
+            hashTable[index].push_back(number);
+            
+            //we calculate the index by taking each number and mod by 100003, 
+            //by doing this we make it easier to store larger numbers
+            //we then push that index to the hashTable with the push_back method
+    }
+    
+    //calc elapsed time on searching
+    const clock_t begin_time = clock();
+    
+    //search 100000 target numbers in hash table
+    int found = 0;
+    int notFound = 0;
+    for(int i = 0; i < 100000; i++)
+    {
+            cin >> number;
+            searchNumber(hashTable, number) ? found++ : notFound++;
+            //this line calls the searchNumber function with the hashTable and number variables
+            //if 'true' is returned, found is increased by 1
+            //if 'false' is returned, notFound is increased by 1
+    }
+    
+    //output result
+    cout << "Found: \t\t" << found << endl;
+    cout << "Not Found:\t" << notFound << endl;
+    
+    //calc elapsed time on searching
+    cout << "Running time:\t" << float( clock() - begin_time)/ CLOCKS_PER_SEC <<endl;
+    
+    return 0;
+}
+
+//our searchNumber function takes the hashTable and an integer target number as the parameters
+//each time it is called it uses the calculated index to find if the target int sent over is located
+	//within the hashTable
+bool searchNumber(vector< list<int> > & hashTable, int target)
+{
+
+     //we calculate the index again in the same way as before by mod dividing by 100003
+     int index = target % 100003;
+            
+     //this if loop checks to make sure that the hashTable exists before proceeding
+				//the for loop within it checks through the hashTable and if it finds the target int
+				//it will return true, if it is not located it returns false
+     if(hashTable[index].size() > 0)
+     {
+                         for(list<int>::const_iterator it = hashTable[index].begin(); it!=hashTable[index].end(); ++it)
+                         {
+                                                         if((*it) == target)
+                                                             return true;
+                                                         
+                         }
+                         return false;
+                         
+     }
+     else
+		 return false;
+	 
+}
