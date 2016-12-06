@@ -1,6 +1,7 @@
 //Dakota Swanson
 //Hash table program: this program takes 100,000 ints from cin(using Linix/IO)
 //and makes a hash table and read and search function
+//includes a file.data file to read in alongside while compiled
 
 #include <iostream>
 #include <ctime>
